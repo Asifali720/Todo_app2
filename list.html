@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Navbar</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                Dropdown
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled">Disabled</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container mt-5 col-sm-6">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Text here" aria-label="Recipient's username"
+                aria-describedby="button-addon2">
+            <button class="btn btn-outline-primary" type="button" id="button">Add</button>
+        </div>
+        <ul class="list-group" id="parentList">
+            <li class="list-group-item d-flex justify-content-between">
+                <h3 class="flex-grow-1">text here</h3><button class="btn btn-warning"
+                    onclick="editItem(this)">Edit</button><button class="btn btn-danger mx-3"
+                    onclick="removeItem(this)">Remove</button>
+            </li>
+        </ul>
+    </div>
+
+
+    <script>
+        let addBtn = document.getElementById('button')
+        let parentList = document.getElementById('parentList')
+        addBtn.addEventListener('click', itemList)
+
+        function itemList(e) {
+            if (parentList.children.length && parentList.children[0].className == 'emptyMsg') {
+                parentList.children[0].remove()
+            }
+            let currentBtn = e.currentTarget;
+            let currentInput = currentBtn.previousElementSibling
+            let currentText = currentInput.value
+
+            let newli = document.createElement('li')
+            // newli.classList.add('list-group-item')
+            newli.className = 'list-group-item d-flex justify-content-between'
+            newli.innerHTML = `
+            <h3 class="flex-grow-1">${currentInput.value}</h3><button
+                class="btn btn-warning" onclick="editItem(this)">Edit</button><button class="btn btn-danger" 
+                 onclick="removeItem(this)">Remove</button>`
+
+            parentList.appendChild(newli)
+        }
+        function removeItem(currElement) {
+            currElement.parentElement.remove()
+            let parentList = document.getElementById('parentList')
+            if (parentList.children.length <= 0) {
+                let emptyMsg = document.createElement('h3')
+                emptyMsg.classList.add('emptyMsg')
+                emptyMsg.textContent = 'nothing else plz add'
+                parentList.appendChild(emptyMsg)
+            }
+        }
+        function editItem(currElement){
+            if(currElement.textContent == 'Done'){
+                currElement.textContent = 'Edit'
+                let currentItemName = currElement.previousElementSibling.value
+                let currHeading = document.createElement('h3');
+                currHeading.className = 'flex-grow-1'
+                currHeading.textContent = currentItemName
+                currElement.parentElement.replaceChild(currHeading,currElement.previousElementSibling)
+            } else{
+                currElement.textContent = 'Done'
+            let currentItem = currElement.previousElementSibling.textContent
+            let currInput = document.createElement('input');
+            currInput.type = 'text'
+            currInput.className = 'form-control'
+            currInput.placeholder = 'text here'
+            currInput.value = currentItem
+            currElement.parentElement.replaceChild(currInput,currElement.previousElementSibling)
+            }          
+        }
+    </script>
+
+</body>
+
+</html>
